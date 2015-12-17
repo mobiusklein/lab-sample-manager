@@ -1,0 +1,36 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{{ super() }}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            <h1>Sample Manager</h1>
+            <p class="lead">
+            Register and share information about samples you've collected, so that the lab can keep track of who did what where when and how.
+            </p>
+        {% if current_user.is_authenticated() %}
+            Hello, {{current_user}}
+        {% else %}
+            <form method="POST" action="">
+            {{ form.hidden_tag() if form.hidden_tag }}
+            {% for f in form if f.type != 'CSRFTokenField' %}
+            <div>
+                <span style='width: 100px;display:inline-block;'>{{ f.label }}</span>
+                {{ f }}
+            {% if f.errors %}
+            <ul>
+                {% for e in f.errors %}
+                <li>{{ e }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            </div>
+            {% endfor %}
+            <button class="btn" type="submit">Submit</button>
+        </form>
+        {{ link | safe }}
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock body %}
